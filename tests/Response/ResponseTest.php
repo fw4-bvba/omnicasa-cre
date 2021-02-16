@@ -31,4 +31,12 @@ class ResponseTest extends TestCase
         $this->expectException(InvalidDataException::class);
         $response = new Response($response_data);
     }
+
+    public function testNestedData(): void
+    {
+        $response_data = new ResponseObject(json_decode('{"Value":{"Foo":{"bar":{"Baz":"qux"}}}}', false));
+        $response = new Response($response_data);
+
+        $this->assertEquals('qux', $response->foo->bar->baz);
+    }
 }

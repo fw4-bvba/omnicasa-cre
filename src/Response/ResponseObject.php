@@ -35,7 +35,9 @@ class ResponseObject implements \JsonSerializable
      */
     protected function parseValue($value, ?string $property = null)
     {
-        if (is_object($value)) {
+        if ($value instanceof ResponseObject) {
+            return $value;
+        } else if (is_object($value)) {
             return new self($value);
         } elseif (is_array($value)) {
             $result = [];
@@ -66,7 +68,7 @@ class ResponseObject implements \JsonSerializable
             throw new InvalidDataException('ResponseObject does not accept data of type "' . gettype($data) . '"');
         }
         $this->_data = $this->_propertyIndex = [];
-        foreach ($data as $property => &$value) {
+        foreach ($data as $property => $value) {
             $this->_propertyIndex[strtolower($property)] = $property;
             $this->_data[$property] = $this->parseValue($value, $property);
         }
