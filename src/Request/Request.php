@@ -12,6 +12,7 @@ namespace OmnicasaCRE\Request;
 use DateTime;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 
 class Request extends GuzzleRequest
 {
@@ -37,7 +38,7 @@ class Request extends GuzzleRequest
         parent::__construct($method, new Uri($endpoint), $headers, $body);
     }
 
-    public function getUri()
+    public function getUri(): UriInterface
     {
         $uri = parent::getUri();
         if (!is_null($this->parameters)) {
